@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
 
-// const User = require('./models/user');
+const Expense = require('./models/expense');
 var cors = require('cors');
 
 const app = express();
@@ -31,31 +31,31 @@ app.use(contactUs);
 app.use(succeSS);
 app.use(user);
 
-// app.post('/user/add-user', async (req, res, next) => {
-//     const username = req.body.name;
-//     const email = req.body.email;
-//     const phonenumber = req.body.number;
+app.post('/expense/add-expense', async (req, res, next) => {
+    const price = req.body.price;
+    const name = req.body.name;
+    const category = req.body.category;
 
-//     const data = await User.create({username: username, phonenumber: phonenumber, email: email})
-//     res.status(201).json({newUserDetail: data});
+    const data = await Expense.create({price: price, name: name, category: category})
+    res.status(201).json({newExpenseDetail: data});
 
-// })
+})
 
-// app.get('/user/get-user', async (req, res, next) => {
-//     try {
-//         const users = await User.findAll();
-//         res.json(users);
+app.get('/expense/get-expense', async (req, res, next) => {
+    try {
+        const expenses = await Expense.findAll();
+        res.json(expenses);
 
-//     } catch (err) {
-//         console.log(err);
-//     }
-// })
+    } catch (err) {
+        console.log(err);
+    }
+})
 
-// app.delete('/user/delete-user/:id', async (req, res) => {
-//     const uId = req.params.id;
-//     await User.destroy({where: {id: uId}});
-//     res.sendStatus(200);
-// })
+app.delete('/expense/delete-expense/:id', async (req, res) => {
+    const uId = req.params.id;
+    await Expense.destroy({where: {id: uId}});
+    res.sendStatus(200);
+})
 
 app.use(errorController.get404);
 
