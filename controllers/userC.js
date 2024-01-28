@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/userCommented');
 
 exports.postUser = async (req, res, next) => {
     const username = req.body.name;
