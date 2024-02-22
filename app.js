@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
 
-const Smapp = require('./models/smapp');
+const Sam = require('./models/sam');
 var cors = require('cors');
 
 const app = express();
@@ -31,20 +31,22 @@ app.use(contactUs);
 app.use(succeSS);
 app.use(user);
 
-app.post('/socialmedia/add-sm', async (req, res, next) => {
-    const link = req.body.link;
-    const description = req.body.description;
+app.post('/studentattendence/add-sa', async (req, res, next) => {
+    const date = req.body.date;
+    const name = req.body.name;
+    const values = req.body.values;
 
     console.log(req.body);
 
-    const data = await Smapp.create({link: link, description: description })
+    const data = await Sam.create({date: date, name: name, values: values })
     res.status(201).json({newSmDetail: data});
 
 })
 
-app.get('/socialmedia/get-sm', async (req, res, next) => {
+app.get('/studentattendance/get-sa', async (req, res, next) => {
     try {
-        const smp = await Smapp.findAll();
+        // const date = req.params.date;
+        const smp = await Sam.findAll();
         res.json(smp);
 
     } catch (err) {
